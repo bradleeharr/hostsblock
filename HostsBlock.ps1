@@ -1,10 +1,24 @@
-
-$block_entries = @("--block", "-b")
-$unblock_entires = @("--unblock", "-u")
+param (
+    [string[]]$block,
+    [string[]]$unblock
+)
 function _help() {
     Write-Host " Block Hosts File "
     Write-Host " $block_entries   : Block Entries"
     Write-Host " $unblock_entries  : Unblock Entires"
+}
+if ("-h" -in $args) {
+    _help;
+    exit
+}
+
+
+$block_entries = @("--block", "-b")
+$unblock_entries = @("--unblock", "-u")
+$hostsFilePath = "C:\Windows\System32\drivers\etc\hosts"
+
+function remove_entry($url) {
+
 }
 
 if ($args.Length -lt 1) {
@@ -12,13 +26,10 @@ if ($args.Length -lt 1) {
     exit
 }
 
-$flag = $($args[1])
-if ( $flag -in $block_entries) {
-    Write-Host "ARGS: $($args[1])"
-    Write-Host "Block Items"
-}
 
-# cat C:\Windows\System32\drivers\etc\hosts
+
+
+
 
 blocked = @(
     "www.reddit.com",
