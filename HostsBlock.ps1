@@ -15,8 +15,9 @@ function _help() {
     Write-Host " |  -l / --list : List host file content"
     Write-Host "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- "
 }
-if ("-h" -in $args) {
-    _help;
+
+if ("-h" -in $args -or $args.Length -lt 1) {
+    _help; 
     exit
 }
 if ("-l" -in $args -or "--list" -in $args) {
@@ -34,13 +35,8 @@ $block_entries = @("--block", "-b")
 $unblock_entries = @("--unblock", "-u")
 
 function remove_entry($url) {
-
 }
 
-if ($args.Length -lt 1) {
-    _help
-    exit
-}
 
 
 
