@@ -7,6 +7,6 @@
 * ` .\HostsBlock.ps1 -t -block "www.amazon.com" ` to test what the hosts file would look like with the added entry
 
 ### Admin Scripts (With Elevated Permission to Edit Actual Hosts File)
-* ` .\HostsBlockAdmin.ps1 -block "www.tiktok.com"    `
-* ` .\HostsBlockAdmin.ps1 -block "www.reddit.com"    `
+* ` .\HostsBlockAdmin.ps1 -block "www.tiktok.com" `
+* ` .\HostsBlockAdmin.ps1 -block "www.reddit.com" `
 * ` .\HostsBlockAdmin.ps1 -clear `    
