@@ -41,18 +41,28 @@ function backup_file($backupDir, $outputFile) {
 }
 function add_entry($outputFile, $url) {
     $line = "127.0.0.1      $url    $COMMENT"
-    Write-Host "Adding Line $line"
+    Write-Output "Adding Line: $line"
     $line | Out-File -FilePath $outputFile -Append -Encoding UTF8
 }
 function remove_entry($outputFile, $url) {
+    $hostsLines = Get-Content -Path $outputFile -Encoding UTF8 
+    Write-Output "Host Lines: `n$( ($hostsLines | Foreach-Object { "`t$_"}) -join "`n" )"
+    Write-Output ""
+    $filteredLines = $hostsLines | Where-Object { $_ -notmatch "$url" } 
+    Write-Output "Removing Lines: $( $hostsLines | Where-Object { $_ -match "$url" } )"
+    Write-Output "Filtered Lines: `n$( ($filteredLines | Foreach-Object { "`t$_"}) -join "`n" )"
+    Write-Output  ""
+    $filteredLines | Set-Content -Path "$outputFile.updated" -Encoding UTF8
+    mv $outputFile "$outputFile.backup" -Force
+    mv "$outputFile.updated" $outputFile -Force
 }
 function clear_entries($outputFile) {
     $hostsLines = Get-Content -Path $outputFile -Encoding UTF8 
-    Write-Host "Host Lines: $hostsLines"
-    Write-Host""
+    Write-Output "Host Lines: `n$( ($hostsLines | Foreach-Object { "`t$_"}) -join "`n" )"
+    Write-Output
     $filteredLines = $hostsLines | Where-Object { $_ -notmatch "$COMMENT" } 
-    Write-Host "Filtered Lines: $filteredLines"
-    Write-Host ""
+    Write-Output "Filtered Lines: `n$( ($filteredLines | Foreach-Object { "`t$_"}) -join "`n" )"
+    Write-Output ""
     $filteredLines | Set-Content -Path "$outputFile.updated" -Encoding UTF8
     mv $outputFile "$outputFile.backup" -Force
     mv "$outputFile.updated" $outputFile -Force
