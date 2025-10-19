@@ -49,7 +49,8 @@ function remove_entry($outputFile, $url) {
     Write-Output "Host Lines: `n$( ($hostsLines | Foreach-Object { "`t$_"}) -join "`n" )"
     Write-Output ""
     $filteredLines = $hostsLines | Where-Object { $_ -notmatch "$url" } 
-    Write-Output "Removing Lines: $( $hostsLines | Where-Object { $_ -match "$url" } )"
+    $removedLines = $hostsLines | Where-Object { $_ -match "$url" }
+    Write-Output "Removing Lines: `n$( ($removedLines | Foreach-Object { "`t$_"}) -join "`n"  )"
     Write-Output "Filtered Lines: `n$( ($filteredLines | Foreach-Object { "`t$_"}) -join "`n" )"
     Write-Output  ""
     $filteredLines | Set-Content -Path "$outputFile.updated" -Encoding UTF8
