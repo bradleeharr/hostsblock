@@ -5,10 +5,13 @@ param (
     [string[]]$unblock,
     [Parameter()]
     [string]$outputFile,
+    [Parameter()]
+    [string]$redirect,
     [Alias("h")][switch]$help,
     [Alias("l")][switch]$list,
     [Alias("t")][switch]$test,
     [Alias("c")][switch]$clear
+    
 )
 
 function _help() {
@@ -19,6 +22,8 @@ function _help() {
     Write-Host " |  --unblock : List of URL entries to remove from hosts file"
     Write-Host " |  --outputFile : (Optional) the path for the hosts file to write to. "
     Write-Host " |                 Otherwise will write to the path at '$hostsFilePath'"
+    Write-Host " |  --redirect : Redirect to IP address (default 127.0.0.1)"
+
     Write-Host " |  -t / --test : Test mode, forces output file to local: './hosts.txt'       " 
     Write-Host " |  -h / --help : Print help"
     Write-Host " |  -l / --list : List host file content"
@@ -39,8 +44,8 @@ function backup_file($backupDir, $outputFile) {
         exit(1);
     }
 }
-function add_entry($outputFile, $url) {
-    $line = "127.0.0.1      $url    $COMMENT"
+function add_entry($outputFile, $url, $redirect) {
+    $line = "$redirect      $url    $COMMENT"
     Write-Output "Adding Line: $line"
     $line | Out-File -FilePath $outputFile -Append -Encoding UTF8
 }
@@ -76,18 +81,30 @@ if ($help) {
     _help; 
     exit
 }
-elseif ($list) {
+if ($list) {
     Write-Host "List in args"
     Get-Content $hostsFilePath
     exit
 }
-elseif ($test) {
+
+if ($test) {
     Write-Host "Output File Empty, Saving to Default"
     $outputFile = "hosts.txt"
 }
 elseif (!$outputFile) {
     $outputFile = $hostsFilePath
 }
+else {
+    # validate outputFile
+}
+
+if (!$redirect) {
+    $redirect = "127.0.0.1"    
+}
+else {
+    # validate redirect
+}
+
 Write-Host "Block: $block"
 Write-Host "Unblock: $unblock"
 Write-Host "OutputFile: $outputFile"
