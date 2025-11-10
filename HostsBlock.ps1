@@ -55,9 +55,9 @@ function remove_entry($outputFile, $url) {
     Write-Output ""
     $filteredLines = $hostsLines | Where-Object { $_ -notmatch "$url" } 
     $removedLines = $hostsLines | Where-Object { $_ -match "$url" }
-    Write-Output "Removing Lines: `n$( ($removedLines | Foreach-Object { "`t$_"}) -join "`n"  )"
     Write-Output "Filtered Lines: `n$( ($filteredLines | Foreach-Object { "`t$_"}) -join "`n" )"
     Write-Output  ""
+    Write-Output "Removing Lines: `n$( ($removedLines | Foreach-Object { "`t$_"}) -join "`n"  )"
     $filteredLines | Set-Content -Path "$outputFile.updated" -Encoding UTF8
     mv $outputFile "$outputFile.backup" -Force
     mv "$outputFile.updated" $outputFile -Force
@@ -103,6 +103,8 @@ if (!$redirect) {
 }
 else {
     # validate redirect
+    Write-Warning "REDIRECT $redirect"
+    Start-Sleep 10
 }
 
 Write-Host "Block: $block"
@@ -115,10 +117,11 @@ if ($clear) {
 
 foreach ($url in $block) {
     Write-Host "URL: $url"
-    add_entry -OutputFile "$outputFile" -Url "$url"
+    add_entry -OutputFile "$outputFile" -Url "$url" -Redirect "$redirect"
 }
 foreach ($url in $unblock) {
     remove_entry -OutputFile "$outputFile" -Url "$url"
 }
 
 ipconfig /flushdns
+Start-Sleep 1
