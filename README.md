@@ -5,6 +5,13 @@
 * You can install this script to have an Alias 'HBlock' with the Install.ps1 Script. This will add an entry to the Powershell $PROFILE, which runs on startup.
 * Usage is then `HBlock -help`, etc.
 
+
+# ExecutionPolicy
+* This uses a powershell script for functionality. 
+* Please configure your ExecutionPolicy if it is not alreayd configured
+* You may do this by opening an administrator powershell window and entering:
+    * `Set-ExecutionPolicy -RemoteSigned` 
+
 # Usage
 * ` .\HostsBlock.ps1 -help ` for help
 * ` .\HostsBlock.ps1 -list ` to list the hosts file
