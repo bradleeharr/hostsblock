@@ -8,6 +8,7 @@ Write-Host $Script
 Write-Host "Adding HBlock to Profile..."
 if (!(Test-Path -Path $PROFILE)) {
     Write-Host "    Profile Does not Exist... Creating new File $PROFILE"
+    mkdir -p $(Split-Path -Parent $PROFILE)  
     New-Item -ItemType File -Path $PROFILE
 }
 
